@@ -65,74 +65,29 @@ const playSound = (type) => {
   }
 };
 
-const CATEGORIES = [
-  {
-    id: 'world_history',
-    title: 'تاریخ جهان',
-    questions: [
-      { id: 'wh1', value: 100, q: 'تمدن باستانی «مایا» بیشتر در کدام منطقه جغرافیایی امروزی تمرکز داشت؟', a: 'آمریکای مرکزی', options: ['آمریکای جنوبی', 'آمریکای مرکزی', 'آفریقای شمالی', 'آسیای شرقی'] },
-      { id: 'wh2', value: 200, q: 'نام پادشاهی که در نبرد واترلو از ائتلاف هفتم شکست خورد و تبعید شد؟', a: 'ناپلئون بناپارت', options: ['لویی شانزدهم', 'ناپلئون بناپارت', 'پتر کبیر', 'شارلمانی'] },
-      { id: 'wh3', value: 300, q: 'طولانی‌ترین جنگ تاریخ بین کدام دو کشور رخ داد که ۳۳۵ سال طول کشید اما هیچ کشته‌ای نداشت؟', a: 'هلند و جزایر سیلی', options: ['انگلستان و فرانسه', 'هلند و جزایر سیلی', 'اسپانیا و پرتغال', 'چین و ژاپن'] },
-      { id: 'wh4', value: 400, q: 'معاهده مشهور «وستفالی» که به جنگ‌های خونین سی‌ساله در اروپا پایان داد در چه سالی امضا شد؟', a: '۱۶۴۸', options: ['۱۴۹۲', '۱۶۴۸', '۱۷۸۹', '۱۸۱۵'] },
-      { id: 'wh5', value: 500, q: 'نام آخرین امپراتور امپراتوری بیزانس (روم شرقی) که در جریان سقوط قسطنطنیه شمشیر به دست کشته شد؟', a: 'کنستانتین یازدهم', options: ['ژوستینیان یکم', 'کنستانتین یازدهم', 'تئودوسیوس دوم', 'باسیل دوم'] },
-    ]
-  },
-  {
-    id: 'advanced_science',
-    title: 'علوم و نجوم',
-    questions: [
-      { id: 'as1', value: 100, q: 'کدام سیاره در منظومه شمسی کوتاه‌ترین روز (حدود ۱۰ ساعت) را دارد؟', a: 'مشتری', options: ['عطارد', 'مریخ', 'مشتری', 'زحل'] },
-      { id: 'as2', value: 200, q: 'غده پینه‌آل (صنوبری) در مغز انسان وظیفه ترشح کدام هورمون خواب‌آور را بر عهده دارد؟', a: 'ملاتونین', options: ['سروتونین', 'دوپامین', 'ملاتونین', 'کورتیزول'] },
-      { id: 'as3', value: 300, q: 'نام ثابت فیزیکی که رابطه بین انرژی یک فوتون و فرکانس موج آن را تعیین می‌کند؟', a: 'ثابت پلانک', options: ['ثابت بولتزمن', 'ثابت آووگادرو', 'ثابت هابل', 'ثابت پلانک'] },
-      { id: 'as4', value: 400, q: 'در مدل استاندارد فیزیک ذرات بنیادی، کدام ذره حامل "نیروی هسته‌ای قوی" است؟', a: 'گلوئون', options: ['فوتون', 'بوزون دابلیو', 'گلوئون', 'گراویتون'] },
-      { id: 'as5', value: 500, q: 'اولین تپ‌اختر (Pulsar) در سال ۱۹۶۷ توسط کدام اخترفیزیکدان زن کشف شد؟', a: 'جوسلین بل بورنل', options: ['ماری کوری', 'ورا روبین', 'جوسلین بل بورنل', 'سالی راید'] },
-    ]
-  },
-  {
-    id: 'world_lit',
-    title: 'ادبیات و فلسفه',
-    questions: [
-      { id: 'wl1', value: 100, q: 'مفهوم «ابرانسان» (Übermensch) اولین بار در کدام اثر فریدریش نیچه مطرح شد؟', a: 'چنین گفت زرتشت', options: ['فراسوی نیک و بد', 'تبارشناسی اخلاق', 'چنین گفت زرتشت', 'غروب بت‌ها'] },
-      { id: 'wl2', value: 200, q: 'رمان «اولیس» اثر شاهکار جیمز جویس، داستان وقایع چه شهری را در یک روز روایت می‌کند؟', a: 'دوبلین', options: ['لندن', 'پاریس', 'دوبلین', 'ادینبرو'] },
-      { id: 'wl3', value: 300, q: 'کدام نمایشنامه‌نویس یونان باستان به عنوان «پدر تراژدی» شناخته می‌شود و اثر «ایرانیان» متعلق به اوست؟', a: 'آیسخولوس (اشیل)', options: ['سوفوکل', 'اوریپید', 'آریستوفان', 'آیسخولوس (اشیل)'] },
-      { id: 'wl4', value: 400, q: 'سیاست‌مداری که در سال ۱۹۵۳ برنده جایزه «نوبل ادبیات» شد کیست؟', a: 'وینستون چرچیل', options: ['تئودور روزولت', 'ژان پل سارتر', 'شارل دوگل', 'وینستون چرچیل'] },
-      { id: 'wl5', value: 500, q: 'در رمان «۱۹۸۴» اثر جورج اورول، نام اتاقی که در آن افراد با بزرگترین ترس خود روبرو می‌شوند چیست؟', a: 'اتاق ۱۰۱', options: ['اتاق ۲۳۷', 'اتاق ۱۰۱', 'بخش ۴۲', 'سلول صفر'] },
-    ]
-  },
-  {
-    id: 'hard_geo',
-    title: 'جغرافیای پیشرفته',
-    questions: [
-      { id: 'hg1', value: 100, q: 'عمیق‌ترین نقطه شناخته شده در تمام اقیانوس‌های جهان چه نام دارد؟', a: 'درازگودال ماریانا', options: ['درازگودال پورتوریکو', 'درازگودال ماریانا', 'گودال تونگا', 'گودال جاوه'] },
-      { id: 'hg2', value: 200, q: 'کدام کشور آفریقایی به طور کامل در دل یک کشور دیگر (آفریقای جنوبی) محصور شده است؟', a: 'لسوتو', options: ['اسواتینی', 'بوتسوانا', 'نامیبیا', 'لسوتو'] },
-      { id: 'hg3', value: 300, q: 'پایتخت کشوری که کوه مشهور «کلیمانجارو» در آن قرار دارد چیست؟', a: 'دودوما (تانزانیا)', options: ['نایروبی', 'دودوما (تانزانیا)', 'کامپالا', 'کیگالی'] },
-      { id: 'hg4', value: 400, q: 'تنگه «باس» (Bass Strait) کدام جزیره را از سرزمین اصلی استرالیا جدا می‌کند؟', a: 'تاسمانی', options: ['نیوزیلند', 'گینه نو', 'تاسمانی', 'کالدونیای جدید'] },
-      { id: 'hg5', value: 500, q: 'دریاچه «وُستوک» که بزرگترین دریاچه کشف‌شده در زیر لایه‌های یخی است، در کدام قاره قرار دارد؟', a: 'جنوبگان (قطب جنوب)', options: ['آمریکای شمالی', 'آسیا', 'اروپا', 'جنوبگان (قطب جنوب)'] },
-    ]
-  },
-  {
-    id: 'arts_music',
-    title: 'هنر و موسیقی',
-    questions: [
-      { id: 'am1', value: 100, q: 'کدام آهنگساز کلاسیک در دهه سوم زندگی‌اش شنوایی خود را از دست داد اما شاهکارهایی خلق کرد؟', a: 'لودویگ فان بتهوون', options: ['یوهان سباستیان باخ', 'ولفگانگ آمادئوس موتسارت', 'لودویگ فان بتهوون', 'فردریک شوپن'] },
-      { id: 'am2', value: 200, q: 'کدام جنبش هنری در اوایل قرن بیستم با هنرمندانی چون دالی و ماگریت و تمرکز بر ضمیر ناخودآگاه شکل گرفت؟', a: 'سوررئالیسم', options: ['امپرسیونیسم', 'کوبیسم', 'دادائیسم', 'سوررئالیسم'] },
-      { id: 'am3', value: 300, q: 'مجسمه مرمرین «دیوید» (داوود) که از شاهکارهای رنسانس در فلورانس است، اثر کیست؟', a: 'میکل‌آنژ', options: ['لئوناردو داوینچی', 'میکل‌آنژ', 'دوناتلو', 'رافائل'] },
-      { id: 'am4', value: 400, q: 'اپرای عظیم «حلقه نیبلونگ» که اجرای کامل چهار بخش آن حدود ۱۵ ساعت طول می‌کشد، اثر کیست؟', a: 'ریشارد واگنر', options: ['جوزپه وردی', 'ریشارد واگنر', 'جاکومو پوچینی', 'پیوتر ایلیچ چایکوفسکی'] },
-      { id: 'am5', value: 500, q: 'تکنیک نقاشی «کُیاروسکورو» (Chiaroscuro) که توسط کاراواجو به اوج رسید به چه معناست؟', a: 'تضاد شدید نور و سایه', options: ['نقاشی با نقطه', 'تضاد شدید نور و سایه', 'ترکیب رنگ‌های مکمل', 'خراشیدن رنگ از روی بوم'] },
-    ]
-  },
-  {
-    id: 'trivia_enigmas',
-    title: 'معماها و دانستنی‌ها',
-    questions: [
-      { id: 'te1', value: 100, q: 'سخت‌ترین ماده طبیعی شناخته شده در کره زمین که از کربن خالص تشکیل شده چیست؟', a: 'الماس', options: ['گرافن', 'تیتانیوم', 'الماس', 'کوارتز'] },
-      { id: 'te2', value: 200, q: 'تنها حرفی از الفبای انگلیسی که در نام هیچ‌یک از ۵۰ ایالت آمریکا وجود ندارد چیست؟', a: 'Q', options: ['X', 'Z', 'J', 'Q'] },
-      { id: 'te3', value: 300, q: 'در روان‌شناسی، «سندرم استاندال» در چه مواقعی به افراد دست می‌دهد و باعث تپش قلب و سرگیجه می‌شود؟', a: 'مواجهه با آثار هنری بسیار زیبا', options: ['ترس از ارتفاع', 'مواجهه با آثار هنری بسیار زیبا', 'قرار گرفتن در تاریکی مطلق', 'شنیدن صداهای خاص'] },
-      { id: 'te4', value: 400, q: 'در نظریه بازی‌ها، کدام معمای مشهور نشان می‌دهد چرا دو نفر ممکن است حتی به نفعشان باشد همکاری نکنند؟', a: 'معمای زندانی', options: ['پارادوکس مونتی هال', 'معمای زندانی', 'بازی اولتیماتوم', 'تراژدی منابع مشترک'] },
-      { id: 'te5', value: 500, q: 'زبانی فراساخته که با داشتن تنها حدود ۱۲۰ تا ۱۳۷ کلمه، یکی از کوچک‌ترین زبان‌های جهان است؟', a: 'توکی پونا', options: ['اسپرانتو', 'کلینگان', 'توکی پونا', 'اینترلینگوا'] },
-    ]
+const VALUES = [100, 200, 300, 400, 500];
+
+const shuffle = (arr) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-];
+  return a;
+};
+
+const buildRandomBoard = (categoriesPool) => {
+  const shuffledCats = shuffle(categoriesPool);
+  return shuffledCats.slice(0, 6);
+};
+
+const getCellKey = (catId, value) => `${catId}-${value}`;
+
+const pickRandomQuestionForValue = (cat, value) => {
+  const pool = cat.questions.filter((q) => q.value === value);
+  if (!pool.length) return null;
+  return pool[Math.floor(Math.random() * pool.length)];
+};
 
 const App = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -140,10 +95,14 @@ const App = () => {
   const [playerCount, setPlayerCount] = useState(4);
   const [playerNames, setPlayerNames] = useState(Array(6).fill(''));
   const [players, setPlayers] = useState([]);
+  const [categoriesPool, setCategoriesPool] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [categoriesError, setCategoriesError] = useState(null);
+  const [gameCategories, setGameCategories] = useState([]);
   const [dailyDoubles, setDailyDoubles] = useState([]);
   const [mandatoryQuestions, setMandatoryQuestions] = useState([]);
   const [activePlayerIndex, setActivePlayerIndex] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [answeredCells, setAnsweredCells] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [currentAnsweringIndex, setCurrentAnsweringIndex] = useState(0);
   const [attemptedPlayers, setAttemptedPlayers] = useState([]);
@@ -155,8 +114,28 @@ const App = () => {
   const [timeLeft, setTimeLeft] = useState(40);
   const [answerDetails, setAnswerDetails] = useState(null);
 
+  useEffect(() => {
+    fetch('/questions.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('بارگذاری سوالات ناموفق بود');
+        return res.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data) || data.length < 6) {
+          throw new Error('فایل سوالات باید حداقل ۶ دسته داشته باشد');
+        }
+        setCategoriesPool(data);
+        setCategoriesError(null);
+      })
+      .catch((err) => setCategoriesError(err.message))
+      .finally(() => setCategoriesLoading(false));
+  }, []);
+
   const startGame = () => {
     initAudio();
+    const board = buildRandomBoard(categoriesPool);
+    setGameCategories(board);
+
     const newPlayers = Array.from({ length: playerCount }).map((_, i) => ({
       id: i + 1,
       name: playerNames[i].trim() || `بازیکن ${i + 1}`,
@@ -168,21 +147,20 @@ const App = () => {
     const dds = [];
     const mqs = [];
 
-    CATEGORIES.forEach(cat => {
-      const qIds = cat.questions.map(q => q.id);
-      const ddIndex = Math.floor(Math.random() * qIds.length);
-      dds.push(qIds[ddIndex]);
-      
-      const remainingIds = qIds.filter((_, i) => i !== ddIndex);
-      const mqIndex = Math.floor(Math.random() * remainingIds.length);
-      mqs.push(remainingIds[mqIndex]);
+    board.forEach((cat) => {
+      const valueSlots = [...VALUES];
+      const ddVal = valueSlots[Math.floor(Math.random() * valueSlots.length)];
+      dds.push(getCellKey(cat.id, ddVal));
+      const remaining = valueSlots.filter((v) => v !== ddVal);
+      const mqVal = remaining[Math.floor(Math.random() * remaining.length)];
+      mqs.push(getCellKey(cat.id, mqVal));
     });
-    
+
     setDailyDoubles(dds);
     setMandatoryQuestions(mqs);
     setGameState('playing');
     setActivePlayerIndex(0);
-    setAnsweredQuestions([]);
+    setAnsweredCells([]);
   };
 
   useEffect(() => {
@@ -202,14 +180,26 @@ const App = () => {
     }
   }, [timeLeft, currentQuestion, showAnswer, showDDSplash, showMandatorySplash]);
 
-  const handleQuestionClick = (categoryTitle, question) => {
-    if (answeredQuestions.includes(question.id)) return;
-    
-    const isDD = dailyDoubles.includes(question.id);
-    const isMandatory = mandatoryQuestions.includes(question.id);
-    const effectiveValue = isDD ? question.value * 2 : question.value;
+  const handleQuestionClick = (cat, value) => {
+    const cellKey = getCellKey(cat.id, value);
+    if (answeredCells.includes(cellKey)) return;
 
-    setCurrentQuestion({ ...question, category: categoryTitle, isDD, isMandatory, effectiveValue });
+    const question = pickRandomQuestionForValue(cat, value);
+    if (!question) return;
+
+    const isDD = dailyDoubles.includes(cellKey);
+    const isMandatory = mandatoryQuestions.includes(cellKey);
+    const effectiveValue = isDD ? value * 2 : value;
+
+    setCurrentQuestion({
+      ...question,
+      value,
+      category: cat.title,
+      isDD,
+      isMandatory,
+      effectiveValue,
+      cellKey,
+    });
     setShowAnswer(false);
     setCurrentAnsweringIndex(activePlayerIndex);
     setAttemptedPlayers([]);
@@ -305,13 +295,13 @@ const App = () => {
   };
 
   const finishQuestion = () => {
-    setAnsweredQuestions([...answeredQuestions, currentQuestion.id]);
+    setAnsweredCells([...answeredCells, currentQuestion.cellKey]);
     setCurrentQuestion(null);
     setShowAnswer(false);
-    
+
     setActivePlayerIndex((activePlayerIndex + 1) % players.length);
 
-    if (answeredQuestions.length + 1 === CATEGORIES.length * 5) {
+    if (gameCategories.length && answeredCells.length + 1 === gameCategories.length * 5) {
       setGameState('gameover');
     }
   };
@@ -392,13 +382,24 @@ const App = () => {
                 ))}
               </div>
 
-              <button 
-                onClick={startGame} 
-                className="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex justify-center items-center gap-2 relative z-10"
-              >
-                شروع رقابت
-                <ChevronRight size={20} className="stroke-[3]"/>
-              </button>
+              {categoriesLoading ? (
+                <div className="w-full py-4 rounded-xl font-bold text-lg text-slate-500 dark:text-slate-400 flex justify-center items-center gap-2 relative z-10 bg-slate-100 dark:bg-slate-700/50">
+                  در حال بارگذاری سوالات…
+                </div>
+              ) : categoriesError ? (
+                <div className="w-full py-4 rounded-xl text-center relative z-10 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium">
+                  {categoriesError}
+                </div>
+              ) : (
+                <button 
+                  onClick={startGame} 
+                  disabled={categoriesPool.length < 6}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex justify-center items-center gap-2 relative z-10"
+                >
+                  شروع رقابت
+                  <ChevronRight size={20} className="stroke-[3]"/>
+                </button>
+              )}
             </div>
           </div>
         ) : (
@@ -452,25 +453,29 @@ const App = () => {
             </header>
 
             <main className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-              {CATEGORIES.map(cat => (
+              {gameCategories.map((cat) => (
                 <div key={cat.id} className="flex flex-col gap-3">
                   <div className="bg-slate-800 dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-700 dark:border-slate-600 text-center flex items-center justify-center h-20 shadow-sm">
                     <h2 className="font-bold text-sm md:text-base text-white dark:text-indigo-100 leading-snug">{cat.title}</h2>
                   </div>
-                  {cat.questions.map(q => (
-                    <button
-                      key={q.id}
-                      onClick={() => handleQuestionClick(cat.title, q)}
-                      disabled={answeredQuestions.includes(q.id)}
-                      className={`h-24 rounded-2xl text-2xl font-black transition-all transform flex items-center justify-center ${
-                        answeredQuestions.includes(q.id)
-                        ? 'bg-slate-100 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-transparent text-slate-300 dark:text-slate-600 cursor-not-allowed'
-                        : 'bg-white dark:bg-slate-800 border-2 border-indigo-100 dark:border-slate-600 text-indigo-600 dark:text-indigo-400 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-700 dark:hover:text-indigo-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_4px_15px_rgba(99,102,241,0.2)] hover:-translate-y-1 active:translate-y-0 active:bg-indigo-50 dark:active:bg-slate-700'
-                      }`}
-                    >
-                      {answeredQuestions.includes(q.id) ? '' : q.value}
-                    </button>
-                  ))}
+                  {VALUES.map((value) => {
+                    const cellKey = getCellKey(cat.id, value);
+                    const isAnswered = answeredCells.includes(cellKey);
+                    return (
+                      <button
+                        key={cellKey}
+                        onClick={() => handleQuestionClick(cat, value)}
+                        disabled={isAnswered}
+                        className={`h-24 rounded-2xl text-2xl font-black transition-all transform flex items-center justify-center ${
+                          isAnswered
+                            ? 'bg-slate-100 dark:bg-slate-800/50 border-2 border-slate-200 dark:border-transparent text-slate-300 dark:text-slate-600 cursor-not-allowed'
+                            : 'bg-white dark:bg-slate-800 border-2 border-indigo-100 dark:border-slate-600 text-indigo-600 dark:text-indigo-400 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-700 dark:hover:text-indigo-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-[0_4px_15px_rgba(99,102,241,0.2)] hover:-translate-y-1 active:translate-y-0 active:bg-indigo-50 dark:active:bg-slate-700'
+                        }`}
+                      >
+                        {isAnswered ? '' : value}
+                      </button>
+                    );
+                  })}
                 </div>
               ))}
             </main>
