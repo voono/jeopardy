@@ -115,7 +115,7 @@ const App = () => {
   const [answerDetails, setAnswerDetails] = useState(null);
 
   useEffect(() => {
-    fetch('/questions.json')
+    fetch(`${import.meta.env.BASE_URL}questions.json`)
       .then((res) => {
         if (!res.ok) throw new Error('بارگذاری سوالات ناموفق بود');
         return res.json();
