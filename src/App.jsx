@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, User, X, Check, HelpCircle, RotateCcw, Users, Clock, Sparkles, ChevronRight, AlertTriangle, Flame, Zap, Moon, Sun } from 'lucide-react';
+import { Trophy, User, X, Check, HelpCircle, RotateCcw, Users, Clock, Sparkles, ChevronRight, AlertTriangle, Flame, Zap, Moon, Sun, Wand2 } from 'lucide-react';
+import { generateCategories } from './gemini';
 
 // --- AUDIO SYSTEM (Web Audio API) ---
 const initAudio = () => {
@@ -95,8 +96,8 @@ const App = () => {
   const [playerCount, setPlayerCount] = useState(4);
   const [playerNames, setPlayerNames] = useState(Array(6).fill(''));
   const [players, setPlayers] = useState([]);
-  const [categoriesPool, setCategoriesPool] = useState([]);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [theme, setTheme] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
   const [categoriesError, setCategoriesError] = useState(null);
   const [gameCategories, setGameCategories] = useState([]);
   const [dailyDoubles, setDailyDoubles] = useState([]);
@@ -114,26 +115,21 @@ const App = () => {
   const [timeLeft, setTimeLeft] = useState(40);
   const [answerDetails, setAnswerDetails] = useState(null);
 
-  useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}questions.json`)
-      .then((res) => {
-        if (!res.ok) throw new Error('بارگذاری سوالات ناموفق بود');
-        return res.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data) || data.length < 6) {
-          throw new Error('فایل سوالات باید حداقل ۶ دسته داشته باشد');
-        }
-        setCategoriesPool(data);
-        setCategoriesError(null);
-      })
-      .catch((err) => setCategoriesError(err.message))
-      .finally(() => setCategoriesLoading(false));
-  }, []);
-
-  const startGame = () => {
+  const startGame = async () => {
     initAudio();
-    const board = buildRandomBoard(categoriesPool);
+    setIsGenerating(true);
+    setCategoriesError(null);
+
+    let board;
+    try {
+      const categories = await generateCategories(theme);
+      board = buildRandomBoard(categories);
+    } catch (err) {
+      setCategoriesError(err.message);
+      setIsGenerating(false);
+      return;
+    }
+
     setGameCategories(board);
 
     const newPlayers = Array.from({ length: playerCount }).map((_, i) => ({
@@ -161,6 +157,7 @@ const App = () => {
     setGameState('playing');
     setActivePlayerIndex(0);
     setAnsweredCells([]);
+    setIsGenerating(false);
   };
 
   useEffect(() => {
@@ -382,24 +379,44 @@ const App = () => {
                 ))}
               </div>
 
-              {categoriesLoading ? (
-                <div className="w-full py-4 rounded-xl font-bold text-lg text-slate-500 dark:text-slate-400 flex justify-center items-center gap-2 relative z-10 bg-slate-100 dark:bg-slate-700/50">
-                  در حال بارگذاری سوالات…
-                </div>
-              ) : categoriesError ? (
-                <div className="w-full py-4 rounded-xl text-center relative z-10 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium">
+              <div className="mb-6 relative z-10">
+                <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2 mb-3">
+                  <Wand2 className="text-indigo-500 dark:text-indigo-400" size={18} />
+                  موضوع سوالات (اختیاری)
+                </label>
+                <input
+                  type="text"
+                  placeholder="مثلاً: تاریخ ایران، فیزیک، سینما… (خالی = متنوع)"
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                  disabled={isGenerating}
+                  className="w-full bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 rounded-xl py-3.5 px-4 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 transition-all outline-none shadow-sm disabled:opacity-60"
+                />
+              </div>
+
+              {categoriesError && (
+                <div className="w-full mb-4 py-3 px-4 rounded-xl text-center relative z-10 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium">
                   {categoriesError}
                 </div>
-              ) : (
-                <button 
-                  onClick={startGame} 
-                  disabled={categoriesPool.length < 6}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex justify-center items-center gap-2 relative z-10"
-                >
-                  شروع رقابت
-                  <ChevronRight size={20} className="stroke-[3]"/>
-                </button>
               )}
+
+              <button
+                onClick={startGame}
+                disabled={isGenerating}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-bold text-lg transition-all shadow-lg shadow-indigo-200 dark:shadow-none flex justify-center items-center gap-2 relative z-10"
+              >
+                {isGenerating ? (
+                  <>
+                    <Sparkles size={20} className="animate-pulse" />
+                    در حال ساخت سوالات با هوش مصنوعی…
+                  </>
+                ) : (
+                  <>
+                    شروع رقابت
+                    <ChevronRight size={20} className="stroke-[3]"/>
+                  </>
+                )}
+              </button>
             </div>
           </div>
         ) : (
