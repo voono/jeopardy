@@ -1,0 +1,41 @@
+# systemd unit template — OPTIONAL, only needed if you want a Node process
+# instead of pure static hosting.
+#
+# This app is a static SPA; nginx serving dist/ directly (see nginx.conf.example)
+# is the recommended setup and needs no service of its own beyond nginx itself
+# (`sudo systemctl enable --now nginx`).
+#
+# Use this unit only if you specifically want `vite preview` running as a
+# long-lived process behind an nginx reverse proxy instead.
+#
+# Usage:
+#   1. Replace the __PLACEHOLDER__ values below.
+#   2. Copy to /etc/systemd/system/jeopardy.service
+#   3. sudo systemctl daemon-reload
+#   4. sudo systemctl enable --now jeopardy
+#   5. Point nginx at it with: proxy_pass http://127.0.0.1:__PORT__;
+#
+# Placeholders:
+#   __APP_ROOT__   absolute path to the repo, e.g. /home/deploy/jeopardy
+#   __RUN_USER__   unprivileged user to run as, e.g. www-data or deploy
+#   __PORT__       local port for `vite preview`, e.g. 4173
+
+[Unit]
+Description=Jeopardy (vite preview)
+After=network.target
+
+[Service]
+Type=simple
+User=__RUN_USER__
+WorkingDirectory=__APP_ROOT__
+ExecStart=/usr/bin/npm run preview -- --port __PORT__ --host 127.0.0.1
+Restart=always
+RestartSec=3
+
+# Hardening (safe defaults for a simple static-preview process)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

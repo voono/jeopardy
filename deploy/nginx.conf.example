@@ -1,0 +1,54 @@
+# nginx vhost template for the Jeopardy static SPA.
+#
+# This app is a client-side build (Vite + React) that calls the Gemini API
+# directly from the browser — there is no Node server to run in production.
+# nginx serves the prebuilt `dist/` files directly.
+#
+# Usage:
+#   1. Replace the __PLACEHOLDER__ values below.
+#   2. Copy to /etc/nginx/sites-available/jeopardy
+#   3. sudo ln -s /etc/nginx/sites-available/jeopardy /etc/nginx/sites-enabled/
+#   4. sudo nginx -t && sudo systemctl reload nginx
+#
+# Placeholders:
+#   __DOMAIN__     e.g. jeopardy.example.com (or `_` to match any host)
+#   __APP_ROOT__   absolute path where `dist/` contents are copied, e.g. /var/www/jeopardy
+#   __BASE_PATH__  must match `base` in vite.config.js, e.g. /jeopardy/ or /
+#
+# NOTE: if __BASE_PATH__ is "/", delete the `location = /` block below (it
+# would conflict) and change `location __BASE_PATH__` to `location /`.
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __DOMAIN__;
+
+    root __APP_ROOT__;
+
+    # Serve the app under its base path (must match vite.config.js `base`).
+    location __BASE_PATH__ {
+        alias __APP_ROOT__/;
+        try_files $uri $uri/ __BASE_PATH__index.html;
+    }
+
+    # Redirect bare domain root to the app's base path.
+    # Delete this block if __BASE_PATH__ is "/".
+    location = / {
+        return 301 __BASE_PATH__;
+    }
+
+    # Cache hashed static assets aggressively; never cache index.html.
+    location ~* \.(?:js|css|svg|png|jpg|jpeg|gif|ico|woff2?)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    location = __BASE_PATH__index.html {
+        add_header Cache-Control "no-cache";
+    }
+}
+
+# --- Optional: HTTPS via certbot ---
+# After the HTTP block above is working, run:
+#   sudo certbot --nginx -d __DOMAIN__
+# certbot will add the TLS server block and redirect automatically.
