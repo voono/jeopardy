@@ -91,7 +91,12 @@ const pickRandomQuestionForValue = (cat, value) => {
 };
 
 const App = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    const saved = localStorage.getItem('jeopardy-theme');
+    if (saved) return saved === 'dark';
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true;
+  });
   const [gameState, setGameState] = useState('setup');
   const [playerCount, setPlayerCount] = useState(4);
   const [playerNames, setPlayerNames] = useState(Array(6).fill(''));
@@ -114,6 +119,12 @@ const App = () => {
   const [showMandatorySplash, setShowMandatorySplash] = useState(false);
   const [timeLeft, setTimeLeft] = useState(40);
   const [answerDetails, setAnswerDetails] = useState(null);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', isDarkMode);
+    localStorage.setItem('jeopardy-theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   const startGame = async () => {
     initAudio();
@@ -317,7 +328,7 @@ const App = () => {
 
   // --- Render Wrapper with Theme Context ---
   return (
-    <div className={isDarkMode ? 'dark' : ''}>
+    <div>
       <div dir="rtl" className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 p-4 md:p-8 font-sans select-none transition-colors duration-300">
         
         {/* Theme Toggle Button */}
@@ -331,12 +342,12 @@ const App = () => {
 
         {gameState === 'setup' ? (
           <div className="flex items-center justify-center min-h-[90vh]">
-            <div className="bg-white dark:bg-slate-800 p-10 rounded-3xl border border-slate-200 dark:border-slate-700 w-full max-w-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none relative overflow-hidden transition-all duration-300">
+            <div className="bg-white dark:bg-slate-800 p-6 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-700 w-full max-w-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] dark:shadow-none relative overflow-hidden transition-all duration-300">
               <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-100 dark:bg-indigo-900/30 blur-3xl rounded-full -mr-32 -mt-32 opacity-70"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-100 dark:bg-blue-900/30 blur-3xl rounded-full -ml-32 -mb-32 opacity-70"></div>
               
-              <div className="text-center mb-12 relative z-10">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-50 dark:bg-indigo-900/50 rounded-2xl mb-6 shadow-sm">
+              <div className="text-center mb-8 relative z-10">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-50 dark:bg-indigo-900/50 rounded-2xl mb-5 shadow-sm">
                   <Trophy className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
                 </div>
                 <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-3 tracking-tight">
@@ -345,7 +356,7 @@ const App = () => {
                 <p className="text-slate-500 dark:text-slate-400 font-medium">تنظیمات بازی جدید</p>
               </div>
 
-              <div className="mb-10 relative z-10 bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
+              <div className="mb-6 relative z-10 bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-700">
                 <div className="flex justify-between items-center mb-6">
                   <label className="text-sm font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
                     <Users className="text-indigo-500 dark:text-indigo-400" size={18} />
@@ -362,7 +373,7 @@ const App = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative z-10">
                 {Array.from({ length: playerCount }).map((_, i) => (
                   <div key={i} className="relative group">
                     <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
