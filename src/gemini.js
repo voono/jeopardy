@@ -1,7 +1,7 @@
 // --- GEMINI QUESTION GENERATOR ---
 // Generates Persian Jeopardy categories on the fly using the Gemini API.
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemini-3.1-flash-lite';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 const VALUES = [100, 200, 300, 400, 500];
